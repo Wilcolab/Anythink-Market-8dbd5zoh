@@ -7,21 +7,6 @@ var auth = require("../auth");
 const { sendEvent } = require("../../lib/event");
 
 // Preload item objects on routes with ':item'
-router.param("title", function(req, res, next, title) {
-  Item.findOne({ title: title })
-    .populate("seller")
-    .then(function(item) {
-      if (!item) {
-        return res.sendStatus(404);
-      }
-
-      req.item = item;
-
-      return next();
-    })
-    .catch(next);
-});
-
 router.param("item", function(req, res, next, slug) {
   Item.findOne({ slug: slug })
     .populate("seller")
@@ -55,6 +40,7 @@ router.get("/", auth.optional, function(req, res, next) {
   var query = {};
   var limit = 100;
   var offset = 0;
+  const title = req.query.title
 
   if (typeof req.query.limit !== "undefined") {
     limit = req.query.limit;
@@ -78,6 +64,10 @@ router.get("/", auth.optional, function(req, res, next) {
 
       if (seller) {
         query.seller = seller._id;
+      }
+
+      if (title) {
+        query.title = title
       }
 
       if (favoriter) {
