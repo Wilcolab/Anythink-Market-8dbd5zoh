@@ -8,7 +8,7 @@ const ItemList = (props) => {
   }
 
   if (props.noResults) {
-    return <div className="py-4 no-items" id='empty '>No items found. </div>;
+    return <div className="py-4 no-items" id='empty'>No items found. </div>;
   }
 
   if (props.items.length === 0) {
