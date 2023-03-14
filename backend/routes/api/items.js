@@ -54,6 +54,11 @@ router.get("/", auth.optional, function (req, res, next) {
     query.tagList = { $in: [req.query.tag] };
   }
 
+  if (title) {
+    const regex = new RegExp(title, "i");
+    query.title = { $regex: title };
+  }
+
   Promise.all([
     req.query.seller ? User.findOne({ username: req.query.seller }) : null,
     req.query.favorited
@@ -66,11 +71,6 @@ router.get("/", auth.optional, function (req, res, next) {
 
       if (seller) {
         query.seller = seller._id;
-      }
-
-      if (title) {
-        const regex = new RegExp(title, "i");
-        query.title = { $regex: title };
       }
 
       if (favoriter) {
