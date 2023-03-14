@@ -23,8 +23,8 @@ const Banner = (props) => {
             <input
               type="text"
               placeholder='what you want'
-              id='search'
-              name='search'
+              id='search-box'
+              name='search-box'
               onChange={onSearchChange}
             ></input>
           </form>
