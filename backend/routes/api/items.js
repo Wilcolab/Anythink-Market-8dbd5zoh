@@ -4,6 +4,7 @@ var Item = mongoose.model("Item");
 var Comment = mongoose.model("Comment");
 var User = mongoose.model("User");
 var auth = require("../auth");
+const { createImage } = require("../../openAi");
 const { sendEvent } = require("../../lib/event");
 
 // Preload item objects on routes with ':item'
@@ -145,6 +146,9 @@ router.post("/", auth.required, function(req, res, next) {
       }
 
       var item = new Item(req.body.item);
+      if (!item.image) {
+        item.image = createImage(item.title, '256x256').then(image => image[0].url)
+      }
 
       item.seller = user;
 
